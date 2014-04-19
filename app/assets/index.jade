@@ -1,0 +1,21 @@
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    title(data-ng-bind-template="{{pageTitle}}")
+
+    link(type="text/css" rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.1.1/css/bootstrap.min.css")
+    link(rel="stylesheet" href="styles/vendor.css")
+    link(rel="stylesheet" href="styles/app.css")
+
+    script(type="text/javascript" src="http://cdn.staticfile.org/jquery/2.1.0/jquery.js")
+    script(type="text/javascript" src="http://cdn.staticfile.org/spin.js/2.0.0/spin.min.js")
+    script(type="text/javascript" src="http://cdn.staticfile.org/twitter-bootstrap/3.1.1/js/bootstrap.js")
+    script(src="scripts/vendor.js")
+    script(type="text/javascript" src="http://cdn.staticfile.org/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.js")
+    script(src="scripts/app.js")
+
+  body
+
+    div(data-ui-view)
+
