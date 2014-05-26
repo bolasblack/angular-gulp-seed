@@ -1,6 +1,7 @@
 .PHONY : server build test npm bower clean
 
 BIN=node_modules/.bin/
+KARMA=node_modules/karma/bin/karma
 
 server : bower clean
 	@$(BIN)/coffeegulp
@@ -9,7 +10,7 @@ build : bower clean
 	@$(BIN)/coffeegulp build
 
 test :
-	@$(BIN)/karma start test/test.unit.conf.coffee
+	@$(KARMA) start tests/test.unit.conf.coffee
 
 npm :
 	@echo "Check npm package update..."

@@ -1,7 +1,7 @@
 'use strict'
 
 # Declare app level module which depends on filters, and services
-App = angular.module('app', [
+angular.module('app', [
   'ui.router'
 
   'app.controllers'
@@ -11,7 +11,7 @@ App = angular.module('app', [
   'app.models'
 ])
 
-App.config([
+.config([
   '$locationProvider'
   '$stateProvider'
   '$urlRouterProvider'

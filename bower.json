@@ -21,9 +21,20 @@
     "angular-cookies": "1.3.0-beta.5",
     "angular-resource": "1.3.0-beta.5",
     "angular-sanitize": "1.3.0-beta.5",
-    "angular-ui-router": "~0.2.10"
+    "angular-ui-router": "~0.2.10",
+    "angular-mocks": "~1.2.16",
+    "angular-locale": "https://code.angularjs.org/1.3.0-beta.10/i18n/angular-locale_zh-hans-cn.js",
+    "angular-ui-bootstrap-bower": "~0.11.0"
   },
   "overrides": {
+    "angular-locale": {
+      "dependencies": {
+        "angular": "*"
+      }
+    },
+    "angular-mocks": {
+      "main": []
+    },
     "moment": {
       "main": [
         "moment.js",
