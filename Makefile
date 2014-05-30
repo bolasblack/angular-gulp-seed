@@ -1,9 +1,9 @@
-.PHONY : server build test npm bower clean
+.PHONY : watch build test npm bower clean
 
 BIN=node_modules/.bin/
 KARMA=node_modules/karma/bin/karma
 
-server : bower clean
+watch : bower clean
 	@$(BIN)/coffeegulp
 
 build : bower clean
