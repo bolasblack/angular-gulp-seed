@@ -36,6 +36,7 @@ getVendorFiles = ->
         switch sysPath.extname filepath
           when '.js', '.coffee' then 'scripts'
           when '.css' then 'styles'
+          else 'others'
       .value()
 
 
