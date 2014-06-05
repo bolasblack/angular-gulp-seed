@@ -1,13 +1,13 @@
 .PHONY : watch build test npm bower clean
 
-BIN=node_modules/.bin/
+BIN=node_modules/.bin
 KARMA=node_modules/karma/bin/karma
 
 watch : bower clean
-	@$(BIN)/coffeegulp
+	@$(BIN)/gulp
 
 build : bower clean
-	@$(BIN)/coffeegulp build
+	@$(BIN)/gulp build
 
 test :
 	@$(KARMA) start tests/test.unit.conf.coffee
