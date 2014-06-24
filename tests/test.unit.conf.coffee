@@ -25,7 +25,6 @@ module.exports = (config) ->
     files: [
       'public/scripts/vendor.js'
       'bower_components/angular-mocks/angular-mocks.js'
-      'node_modules/sinon/pkg/sinon-1.7.3.js'
       'public/scripts/app.js'
       'tests/unit/**/*_specs.coffee'
     ]
