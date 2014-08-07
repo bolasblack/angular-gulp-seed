@@ -8,6 +8,9 @@ watch : bower clean
 build : bower clean
 	@$(BIN)/gulp build
 
+publish : build
+	cd public && git add -A && git commit -m "`date -R`" && git push
+
 test :
 	@if [ -z $$KARMA_BROWSERS ]; then \
 		KARMA_BROWSERS=PhantomJS; \
