@@ -8,6 +8,7 @@ module.exports = (config) ->
       'karma-mocha'
       'karma-sinon-chai'
       'karma-chrome-launcher'
+      'karma-phantomjs-launcher'
       'karma-coffee-preprocessor'
     ]
 

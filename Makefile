@@ -1,7 +1,6 @@
 .PHONY : watch build test npm bower clean
 
 BIN=node_modules/.bin
-KARMA=node_modules/karma/bin/karma
 
 watch : bower clean
 	@$(BIN)/gulp
@@ -10,7 +9,10 @@ build : bower clean
 	@$(BIN)/gulp build
 
 test :
-	@$(KARMA) start tests/test.unit.conf.coffee
+	@if [ -z $$KARMA_BROWSERS ]; then \
+		KARMA_BROWSERS=PhantomJS; \
+	fi; \
+	node_modules/karma/bin/karma start tests/test.unit.conf.coffee --browsers $$KARMA_BROWSERS
 
 npm :
 	@echo "Check npm package update..."
