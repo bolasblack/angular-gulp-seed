@@ -1,6 +1,6 @@
 .PHONY : watch build test npm bower clean
 
-BIN=node_modules/.bin
+BIN=`npm bin`
 
 watch : bower clean
 	@$(BIN)/gulp
@@ -41,4 +41,3 @@ bower : npm
 clean :
 	@echo "Start clean public files..."
 	@-rm -rf public/*
-
