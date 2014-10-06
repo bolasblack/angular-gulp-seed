@@ -3,6 +3,7 @@
 # Declare app level module which depends on filters, and services
 angular.module('app', [
   'ui.router'
+  'ngAria'
 
   'app.controllers'
   'app.directives'
@@ -30,4 +31,3 @@ angular.module('app', [
 
 angular.element(document).ready ->
   angular.bootstrap(document, ['app'])
-
