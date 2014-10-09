@@ -13,20 +13,17 @@ angular.module('app', [
 ])
 
 .config([
-  '$locationProvider'
-  '$stateProvider'
-  '$urlRouterProvider'
+  '$locationProvider', '$stateProvider', '$urlRouterProvider'
+  ($locationProvider ,  $stateProvider ,  $urlRouterProvider) ->
+    $locationProvider.html5Mode(false).hashPrefix("!")
 
-($locationProvider, $stateProvider, $urlRouterProvider) ->
-  $locationProvider.html5Mode(false).hashPrefix("!")
+    $urlRouterProvider.otherwise '/'
 
-  $urlRouterProvider.otherwise '/'
-
-  $stateProvider
-    .state('home', {
-      url: '/'
-      templateUrl: 'partials/home.html'
-    })
+    $stateProvider
+      .state('home', {
+        url: '/'
+        templateUrl: 'partials/home.html'
+      })
 ])
 
 angular.element(document).ready ->
