@@ -1,22 +1,20 @@
 
-# angular-gulp-seed - start project with AngularJS and Gulp
+# angular-gulp-seed
 
-## Getting Started
+Quick start project with [AngularJS](http://www.angularjs.org/) and [Gulp](http://gulpjs.com/)
 
-To get you started you can simply clone the angular-gulp-seed repository and start your work.
+## Usage
 
-### Clone angular-gulp-seed
+1. Clone repo
 
-Clone the angular-gulp-seed repository using [git][git]:
+    ```sh
+    git clone https://github.com/bolasblack/angular-gulp-seed.git my_app
+    cd my_app
+    git remote set-url origin git@github.com:username/reponame.git
+    ```
 
-```sh
-git clone https://github.com/bolasblack/angular-gulp-seed.git
-cd angular-gulp-seed
-```
+2. Start work
 
-### Start your work
-
-```sh
-make
-```
-
+    ```sh
+    make
+    ```
