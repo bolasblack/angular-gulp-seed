@@ -14,6 +14,7 @@ sysPath = require 'path'
 Q = require 'q'
 _ = require 'lodash'
 glob = require 'glob'
+mergeStream = require 'merge-stream'
 readComponents = require 'read-components'
 
 
@@ -59,10 +60,19 @@ PATHS = {
 gulp.task 'assets', ->
   uneditableExts = 'png jpg gif eot ttf woff svg'.split ' '
 
-  gulp.src PATHS.assets.src
-    .pipe gulp_if "**/*.+(#{uneditableExts.join '|'})", gulp_replace /{%timestamp%}/g, Date.now()
-    .pipe gulp_if '**/*.jade', gulp_jade(pretty: true).on 'error', gulp_util.log
+  steams = []
+
+  steams.push(gulp.src PATHS.assets.src
+    .pipe gulp_if '**/*.jade', gulp_jade(pretty: true, locale: timestamp: Date.now())
+    .on 'error', gulp_util.log
     .pipe gulp.dest PATHS.assets.dest
+  )
+
+  steams.push(gulp.src 'bower_components/bootstrap/fonts/**/*'
+    .pipe gulp.dest PATHS.assets.dest + 'fonts/'
+  )
+
+  mergeStream steams...
 
 gulp.task 'partials', ->
   gulp.src PATHS.partials.src
@@ -120,4 +130,3 @@ gulp.task 'watch', ->
 gulp.task 'build', ['assets', 'partials', 'scripts', 'styles', 'vendor']
 
 gulp.task 'default', ['build', 'watch']
-
