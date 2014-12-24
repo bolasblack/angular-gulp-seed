@@ -1,12 +1,12 @@
 gulp = require 'gulp'
 gulp_if = require 'gulp-if'
 gulp_util = require 'gulp-util'
+gulp_jade = require 'gulp-jade'
 gulp_order = require 'gulp-order'
+gulp_coffee = require 'gulp-coffee'
 gulp_concat = require 'gulp-concat'
 gulp_replace = require 'gulp-replace'
-gulp_livereload = require 'gulp-livereload'
-gulp_jade = require 'gulp-jade'
-gulp_coffee = require 'gulp-coffee'
+gulp_connect = require 'gulp-connect'
 gulp_rework = require './scripts/gulp-rework'
 
 sysPath = require 'path'
@@ -110,23 +110,25 @@ gulp.task 'vendor', ->
 
     vendorFiles
 
+gulp.task 'server', ->
+  gulp_connect.server(
+    port: 9000
+    root: 'public'
+    livereload: true
+  )
+
 gulp.task 'watch', ->
-  livereloadServer = gulp_livereload()
+  _(PATHS).forEach (paths, type) ->
+    gulp.task "reload_#{type}", [type], ->
+      gulp.src(paths.src).pipe gulp_connect.reload()
+    gulp.watch paths.src, ["reload_#{type}"]
 
-  livereload = (watcher) ->
-    watcher.on 'change', triggerLivereload
-
-  triggerLivereload = _.debounce (file) ->
-    livereloadServer.changed file.path
-  , 500
-
-  livereload gulp.watch PATHS.assets.src, ['assets']
-  livereload gulp.watch PATHS.partials.src, ['partials']
-  livereload gulp.watch PATHS.scripts.src, ['scripts']
-  livereload gulp.watch PATHS.styles.src, ['styles']
-  livereload gulp.watch 'bower.json', ['vendor']
+  gulp.task "reload_vendor", ['vendor'], ->
+    gulp.src ["#{PATHS.scripts.dest}/vendor.js", "#{PATHS.scripts.dest}/vendor.css"]
+      .pipe gulp_connect.reload()
+  gulp.watch 'bower.json', ['reload_vendor']
   return
 
 gulp.task 'build', ['assets', 'partials', 'scripts', 'styles', 'vendor']
 
-gulp.task 'default', ['build', 'watch']
+gulp.task 'default', ['build', 'server', 'watch']
