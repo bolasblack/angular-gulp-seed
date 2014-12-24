@@ -1,4 +1,4 @@
-.PHONY : watch build test npm bower clean
+.PHONY : watch build publish test npm bower clean _publish_history
 
 BIN=`npm bin`
 
@@ -41,3 +41,11 @@ bower : npm
 clean :
 	@echo "Start clean public files..."
 	@-rm -rf public/*
+
+# DO NOT USE IT
+_publish_history :
+	git checkout master
+	rm -rf ./*
+	git checkout history -- .
+	git add -A
+	git commit --amend --no-edit
