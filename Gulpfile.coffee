@@ -15,31 +15,15 @@ Q = require 'q'
 _ = require 'lodash'
 glob = require 'glob'
 mergeStream = require 'merge-stream'
-readComponents = require 'read-components'
-
+mainBowerFiles = require 'main-bower-files'
 
 getVendorFiles = ->
-  Q.all([
-    Q.denodeify(readComponents)('.', 'bower')
-    Q.denodeify(glob)('vendor/**/*')
-  ]).then ([packages, vendorFiles]) ->
-    _(packages)
-      .tap (packages) ->
-        packages.sort (a, b) ->
-          b.sortingLevel - a.sortingLevel
-      .map (packages) ->
-        packages.files
-      .flatten()
-      .tap (filelist) ->
-        vendorFiles.forEach (filepath) ->
-          filelist.push filepath
-      .groupBy (filepath) ->
-        switch sysPath.extname filepath
-          when '.js', '.coffee' then 'scripts'
-          when '.css' then 'styles'
-          else 'others'
-      .value()
-
+  vendorFiles = mainBowerFiles().concat(glob.sync 'vendor/**/*')
+  _.groupBy vendorFiles, (filepath) ->
+    switch sysPath.extname filepath
+      when '.js', '.coffee' then 'scripts'
+      when '.css' then 'styles'
+      else 'others'
 
 PATHS = {
   assets:
@@ -60,19 +44,19 @@ PATHS = {
 gulp.task 'assets', ->
   uneditableExts = 'png jpg gif eot ttf woff svg'.split ' '
 
-  steams = []
+  streams = []
 
-  steams.push(gulp.src PATHS.assets.src
+  streams.push(gulp.src PATHS.assets.src
     .pipe gulp_if '**/*.jade', gulp_jade(pretty: true, locale: timestamp: Date.now())
     .on 'error', gulp_util.log
     .pipe gulp.dest PATHS.assets.dest
   )
 
-  steams.push(gulp.src 'bower_components/bootstrap/fonts/**/*'
+  streams.push(gulp.src 'bower_components/bootstrap/fonts/**/*'
     .pipe gulp.dest PATHS.assets.dest + 'fonts/'
   )
 
-  mergeStream steams...
+  mergeStream streams...
 
 gulp.task 'partials', ->
   gulp.src PATHS.partials.src
@@ -96,19 +80,23 @@ gulp.task 'styles', ['assets'], ->
     .pipe gulp.dest PATHS.styles.dest
 
 gulp.task 'vendor', ->
-  getVendorFiles().then (vendorFiles) ->
-    unless _(vendorFiles.scripts).isEmpty()
-      gulp.src vendorFiles.scripts
-        .pipe gulp_if '**/*.coffee', gulp_coffee().on 'error', gulp_util.log
-        .pipe gulp_concat 'vendor.js'
-        .pipe gulp.dest PATHS.scripts.dest
+  vendorFiles = getVendorFiles()
+  streams = []
 
-    unless _(vendorFiles.styles).isEmpty()
-      gulp.src vendorFiles.styles
-        .pipe gulp_concat 'vendor.css'
-        .pipe gulp.dest PATHS.styles.dest
+  unless _(vendorFiles.scripts).isEmpty()
+    streams.push(gulp.src vendorFiles.scripts
+      .pipe gulp_if '**/*.coffee', gulp_coffee().on 'error', gulp_util.log
+      .pipe gulp_concat 'vendor.js'
+      .pipe gulp.dest PATHS.scripts.dest
+    )
 
-    vendorFiles
+  unless _(vendorFiles.styles).isEmpty()
+    streams.push(gulp.src vendorFiles.styles
+      .pipe gulp_concat 'vendor.css'
+      .pipe gulp.dest PATHS.styles.dest
+    )
+
+  mergeStream streams...
 
 gulp.task 'server', ->
   gulp_connect.server(
@@ -126,7 +114,7 @@ gulp.task 'watch', ->
   gulp.task "reload_vendor", ['vendor'], ->
     gulp.src ["#{PATHS.scripts.dest}/vendor.js", "#{PATHS.scripts.dest}/vendor.css"]
       .pipe gulp_connect.reload()
-  gulp.watch 'bower.json', ['reload_vendor']
+  gulp.watch ['bower.json', 'vendor/**/*'], ['reload_vendor']
   return
 
 gulp.task 'build', ['assets', 'partials', 'scripts', 'styles', 'vendor']
