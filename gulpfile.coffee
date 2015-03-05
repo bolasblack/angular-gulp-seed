@@ -8,13 +8,16 @@ gulp_concat = require 'gulp-concat'
 gulp_replace = require 'gulp-replace'
 gulp_connect = require 'gulp-connect'
 gulp_rework = require './scripts/gulp-rework'
+gulp_sourceStream = require 'vinyl-source-stream'
+mergeStream = require 'merge-stream'
+es = require 'event-stream'
 
 sysPath = require 'path'
 
 Q = require 'q'
 _ = require 'lodash'
 glob = require 'glob'
-mergeStream = require 'merge-stream'
+browserify = require 'browserify'
 mainBowerFiles = require 'main-bower-files'
 
 getVendorFiles = ->
@@ -64,13 +67,14 @@ gulp.task 'partials', ->
     .pipe gulp.dest PATHS.partials.dest
 
 gulp.task 'scripts', ['assets'], ->
-  gulp.src PATHS.scripts.src
+  stream = gulp.src PATHS.scripts.src
+    .pipe gulp_order(['**/*.js', '**/index.coffee'])
     .pipe gulp_coffee().on 'error', gulp_util.log
-    .pipe(gulp_order [
-      '**/index.js'
-      '**/*.js'
-    ])
-    .pipe gulp_concat 'app.js'
+    .pipe gulp_concat('tmp.js')
+    .pipe es.map (data, callback) ->
+      callback null, data.contents.toString()
+  browserify(stream).bundle()
+    .pipe gulp_sourceStream('app.js')
     .pipe gulp.dest PATHS.scripts.dest
 
 gulp.task 'styles', ['assets'], ->
