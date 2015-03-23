@@ -1,6 +1,5 @@
 'use strict'
 
-# Declare app level module which depends on filters, and services
 angular.module('app', [
   'ui.router'
   'ngAria'
@@ -25,6 +24,24 @@ angular.module('app', [
         templateUrl: 'partials/home.html'
         controller: 'HomeController'
       })
+])
+
+# Add state class to html element, example:
+#   state: user           ->  page-user
+#   state: user.settings  ->  page-user-settings
+.run([
+  '$rootScope', '$state'
+  ($rootScope ,  $state) ->
+    $rootScope.$on '$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) ->
+      $htmlElem = angular.element 'html'
+      isClassnameCreatedBySelf = (classname) -> /^page-/.test classname
+      oldClassnames = ($htmlElem.attr('class') ? '').split(' ').filter(isClassnameCreatedBySelf).join ' '
+      $htmlElem.removeClass(oldClassnames)
+
+      nestedStates = toState.name.split('.')
+      _.range(nestedStates.length).forEach (index) ->
+        (states = nestedStates.slice 0, index + 1).unshift 'page'
+        $htmlElem.addClass states.join '-'
 ])
 
 angular.element(document).ready ->
