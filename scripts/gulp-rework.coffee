@@ -36,8 +36,8 @@ module.exports = ->
     css = cssWhitespaceCompiler file.contents.toString()
     file.contents = new Buffer(rework(css)
       .use(rework_import
-        path: 'styles/app.styl'
-        base: 'src/'
+        path: 'app/styles/'
+        base: 'app/'
         transform: cssWhitespaceCompiler
       )
       .use rework_vars()
