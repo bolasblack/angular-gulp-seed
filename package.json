@@ -43,9 +43,16 @@
     "mocha": "^2.2.1",
     "rework": "^1.0.1",
     "rework-calc": "^1.1.0",
-    "rework-importer": "^0.4.0",
+    "rework-import": "^2.0.1",
+    "rework-inherit": "^0.2.3",
+    "rework-plugin-colors": "^1.0.3",
+    "rework-plugin-ease": "^1.0.1",
+    "rework-plugin-inline": "^1.0.1",
+    "rework-plugin-mixin": "^1.0.0",
+    "rework-plugin-references": "^1.0.1",
     "rework-shade": "^1.4.3",
     "rework-vars": "^3.1.1",
+    "through2": "^0.6.3",
     "vinyl-source-stream": "^1.0.0"
   }
 }
