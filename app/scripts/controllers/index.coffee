@@ -5,8 +5,6 @@ url = require 'url'
 ### Controllers ###
 
 angular.module('app.controllers', [
-  'ngCookies'
-
   'ui.bootstrap'
 ])
 

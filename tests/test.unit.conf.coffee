@@ -25,7 +25,8 @@ module.exports = (config) ->
     # list of files / patterns to load in the browser
     files: [
       'public/scripts/vendor.js'
-      'bower_components/angular-mocks/angular-mocks.js'
+      'public/scripts/bower.js'
+      'node_modules/angular-mocks/angular-mocks.js'
       'public/scripts/app.js'
       'tests/unit/**/*_specs.coffee'
     ]
@@ -66,4 +67,3 @@ module.exports = (config) ->
     # Continuous Integration mode
     # if true, it capture browsers, run tests and exit
     singleRun: false
-
