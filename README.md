@@ -1,7 +1,16 @@
 
 # angular-gulp-seed
 
-Quick start project with [AngularJS](http://www.angularjs.org/) and [Gulp](http://gulpjs.com/)
+Quick start project with [angular.js](http://www.angularjs.org/) and [gulp](http://gulpjs.com/)
+
+## Main Components
+
+* [gulp](http://gulpjs.com/)
+* [angular.js](http://www.angularjs.org/)
+* [bootstrap-sass](https://github.com/twbs/bootstrap-sass/)
+* [Browserify](http://browserify.org/)
+* [CoffeeScript](http://coffeescript.org/)
+* [Sass](http://sass-lang.com/)
 
 ## Usage
 
