@@ -6,6 +6,7 @@ gulp_sass = require 'gulp-sass'
 gulp_order = require 'gulp-order'
 gulp_coffee = require 'gulp-coffee'
 gulp_concat = require 'gulp-concat'
+gulp_plumber = require 'gulp-plumber'
 gulp_replace = require 'gulp-replace'
 gulp_connect = require 'gulp-connect'
 gulp_sourcemaps = require 'gulp-sourcemaps'
@@ -46,12 +47,13 @@ gulp.task 'assets', ->
   streams = []
 
   streams.push(gulp.src PATHS.assets.src
+    .pipe gulp_plumber()
     .pipe gulp_if '**/*.jade', gulp_jade(pretty: true, locale: timestamp: Date.now())
-    .on 'error', gulp_util.log
     .pipe gulp.dest PATHS.assets.dest
   )
 
   streams.push(gulp.src 'node_modules/bootstrap-sass/assets/fonts/bootstrap/**/*'
+    .pipe gulp_plumber()
     .pipe gulp.dest PATHS.assets.dest + 'fonts/'
   )
 
@@ -59,13 +61,15 @@ gulp.task 'assets', ->
 
 gulp.task 'partials', ->
   gulp.src PATHS.partials.src
-    .pipe gulp_jade(pretty: true).on 'error', gulp_util.log
+    .pipe gulp_plumber()
+    .pipe gulp_jade(pretty: true)
     .pipe gulp.dest PATHS.partials.dest
 
 gulp.task 'scripts', ['assets'], ->
   stream = gulp.src PATHS.scripts.src
+    .pipe gulp_plumber()
     .pipe gulp_order(['**/*.js', '**/index.coffee'])
-    .pipe gulp_if '**/*.coffee', gulp_coffee().on 'error', gulp_util.log
+    .pipe gulp_coffee()
     .pipe gulp_concat('app_tmp.js')
     .pipe es.map (data, callback) ->
       callback null, data.contents.toString()
@@ -75,15 +79,16 @@ gulp.task 'scripts', ['assets'], ->
 
 gulp.task 'styles', ['assets'], ->
   gulp.src PATHS.styles.src
+    .pipe gulp_plumber()
     .pipe gulp_sourcemaps.init()
-    .pipe gulp_if '**/*.sass', gulp_sass(indentedSyntax: true).on 'error', gulp_util.log
+    .pipe gulp_sass(indentedSyntax: true)
     .pipe gulp_sourcemaps.write('./maps')
     .pipe gulp.dest PATHS.styles.dest
 
 gulp.task 'vendor', ->
   stream = gulp.src PATHS.vendor.src
-    .pipe gulp_order(['**/*.js', '**/index.coffee'])
-    .pipe gulp_coffee().on 'error', gulp_util.log
+    .pipe gulp_plumber()
+    .pipe gulp_coffee()
     .pipe gulp_concat('vendor_tmp.js')
     .pipe es.map (data, callback) ->
       callback null, data.contents.toString()
