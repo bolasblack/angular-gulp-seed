@@ -16,7 +16,6 @@ es = require 'event-stream'
 
 sysPath = require 'path'
 
-Q = require 'q'
 _ = require 'lodash'
 glob = require 'glob'
 browserify = require 'browserify'
