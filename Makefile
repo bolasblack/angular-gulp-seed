@@ -23,7 +23,6 @@ npm :
 	@CHECK_FILE=package.json STATE_FOLDER=node_modules sh scripts/update_manager.sh check; \
 	if [ $$? -eq 1 ]; then \
 		npm install \
-		&& npm update \
 		&& CHECK_FILE=package.json STATE_FOLDER=node_modules sh scripts/update_manager.sh update \
 		; \
 	fi

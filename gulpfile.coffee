@@ -8,7 +8,7 @@ gulp_coffee = require 'gulp-coffee'
 gulp_concat = require 'gulp-concat'
 gulp_plumber = require 'gulp-plumber'
 gulp_replace = require 'gulp-replace'
-gulp_connect = require 'gulp-connect'
+gulp_webserver = require 'gulp-webserver'
 gulp_sourcemaps = require 'gulp-sourcemaps'
 gulp_sourceStream = require 'vinyl-source-stream'
 mergeStream = require 'merge-stream'
@@ -97,19 +97,18 @@ gulp.task 'vendor', ->
     .pipe gulp.dest PATHS.vendor.dest
 
 gulp.task 'server', ->
-  gulp_connect.server(
+  gulp.src('./public').pipe(gulp_webserver(
     port: 9000
-    root: 'public'
-    livereload: true
-  )
+    livereload:
+      enable: true
+  ))
 
-gulp.task 'watch', ->
   _.forEach PATHS, (paths, type) ->
-    gulp.task "reload_#{type}", [type], ->
-      gulp.src(paths.src).pipe gulp_connect.reload()
-    gulp.watch paths.src, ["reload_#{type}"]
+    gulp.watch paths.src, [type]
+    return
+
   return
 
 gulp.task 'build', ['assets', 'partials', 'scripts', 'styles', 'vendor']
 
-gulp.task 'default', ['build', 'server', 'watch']
+gulp.task 'default', ['build', 'server']
