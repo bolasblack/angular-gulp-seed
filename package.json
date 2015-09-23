@@ -43,7 +43,7 @@
     "gulp-sass": "2.0.4",
     "gulp-sourcemaps": "1.5.2",
     "gulp-util": "3.0.6",
-    "gulp-webserver": "0.9.1",
+    "gulp-webserver": "bolasblack/gulp-webserver",
     "karma": "0.13.9",
     "karma-chrome-launcher": "0.2.0",
     "karma-coffee-preprocessor": "0.3.0",
